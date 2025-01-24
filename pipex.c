@@ -79,15 +79,6 @@ char	*ft_check_cmd(char **path, char **cmd)
 
 char	**ft_check_opt(char *path_cmd, char **cmd)
 {
-	// int		i;
-	// char	**opt;
-
-	// i = 1;
-	// if (!cmd[1])
-	// {
-	// 	ft_free_split(cmd);
-	// 	return (path_cmd);
-	// }
 	free (cmd[0]);
 	cmd[0] = ft_strdup(path_cmd);
 	return(cmd);
@@ -104,40 +95,45 @@ void	ft_exe(char **argv, char **env)
 	path = ft_find_path(env);
 	path_cmd = ft_check_cmd(path, cmd);
 	path_opt = ft_check_opt(path_cmd, cmd);
+	printf("path_cmd =%s\n", path_cmd);
+	int i = -1;
+	while (path_opt[++i])
+		printf("path_opt =%s\n", path_opt[i]);
 	execve(path_cmd, path_opt, NULL);
+	ft_printf("free");
 	free(path_cmd);
 	ft_free_split(path_opt);
 }
 
-void	ft_pipe()
+void	ft_pipe(int fd_file, char **argv, char **env)
 {
-	int	pipefd[2];
+	int	fd_pipe[2];
 	int	id;
 
-	pipe(pipefd);
+	if (pipe(fd_pipe) == -1)
+		perror("error pipe");
 	id = fork();
+	if (id < 0)
+		perror("error fork");
 	if (id == 0)
 	{
-
+		fd_pipe[0] = fd_file;
+		dup2(fd_pipe[0], STDIN_FILENO);
+		ft_exe(argv, env);
 	}
-
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	char	*file;
-	int		fd;
+	int		fd_file;
 	(void) argc;
 	(void) env;
 
-	fd = open(argv[1], O_RDONLY);
-	file = ft_read_file(fd);
-	ft_printf("file = %s", file);
-	free(file);
-
-	
+	fd_file = open(argv[1], O_RDONLY);
+	if (fd_file == -1)
+		return (1);
+	ft_pipe(fd_file, argv, env);
 	// ft_exe(argv, env);
-
 	return (0);
 }
 

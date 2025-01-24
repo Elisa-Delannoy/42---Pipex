@@ -30,12 +30,4 @@
 # include <stdlib.h>
 # include <stddef.h>
 
-char	*ft_read_file(int fd);
-char	*ft_strjoinline(char const *s1, char const *s2);
-char	*ft_strchrline(const char *s, int c);
-char	*ft_strdupline(const char *s);
-void	*ft_callocline(size_t nmemb, size_t size);
-size_t	ft_strlenline(const char *s);
-
-
 #endif
