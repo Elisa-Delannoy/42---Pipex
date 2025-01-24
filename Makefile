@@ -19,8 +19,9 @@ FTPRINTF = $(FTPRINTF_DIR)/libftprintf.a
 CC = cc -g
 CFLAGS = -Wall -Wextra -Werror -I ./
 NAME = pipex
-SRC = pipex.c 
-
+SRC = pipex.c read_and_stock_file.c \
+	get_next_line_utils.c \
+	# getnextline/get_next_line.c 
 OBJ = $(SRC:.c=.o)
 
 all : $(NAME)

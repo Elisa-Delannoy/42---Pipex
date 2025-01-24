@@ -15,6 +15,7 @@
 #include "printf/ft_printf.h"
 #include <stdio.h>
 #include <time.h>
+#include <fcntl.h>
 // #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -99,7 +100,7 @@ void	ft_exe(char **argv, char **env)
 	char	**path_opt;
 	char	**cmd;	
 
-	cmd = ft_split(argv[1], ' '); /*mettre 2 qund file 1 + voir pour boucle*/
+	cmd = ft_split(argv[2], ' '); /*mettre 2 qund file 1 + voir pour boucle*/
 	path = ft_find_path(env);
 	path_cmd = ft_check_cmd(path, cmd);
 	path_opt = ft_check_opt(path_cmd, cmd);
@@ -108,12 +109,34 @@ void	ft_exe(char **argv, char **env)
 	ft_free_split(path_opt);
 }
 
+void	ft_pipe()
+{
+	int	pipefd[2];
+	int	id;
+
+	pipe(pipefd);
+	id = fork();
+	if (id == 0)
+	{
+
+	}
+
+}
 
 int	main(int argc, char **argv, char **env)
 {
-	(void)	argc;
+	char	*file;
+	int		fd;
+	(void) argc;
+	(void) env;
+
+	fd = open(argv[1], O_RDONLY);
+	file = ft_read_file(fd);
+	ft_printf("file = %s", file);
+	free(file);
+
 	
-	ft_exe(argv, env);
+	// ft_exe(argv, env);
 
 	return (0);
 }
