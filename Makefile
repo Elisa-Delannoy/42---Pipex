@@ -19,7 +19,7 @@ FTPRINTF = $(FTPRINTF_DIR)/libftprintf.a
 CC = cc -g
 CFLAGS = -Wall -Wextra -Werror -I ./
 NAME = pipex
-SRC = pipex.c
+SRC = pipex.c path.c
 OBJ = $(SRC:.c=.o)
 
 all : $(NAME)

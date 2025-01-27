@@ -13,11 +13,6 @@
 #include "pipex.h"
 #include "libft/libft.h"
 #include "printf/ft_printf.h"
-#include <stdio.h>
-#include <time.h>
-#include <fcntl.h>
-// #include <sys/types.h>
-#include <sys/wait.h>
 
 void	ft_free_split(char **path)
 {
@@ -30,58 +25,6 @@ void	ft_free_split(char **path)
 		i++;
 	}
 	free (path);
-}
-
-char	**ft_find_path(char **env)
-{
-	char	**chk_path;
-	char	**path;
-	int		i;
-	
-	i = 0;
-	while (env[i])
-	{
-		if (strncmp(env[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	chk_path = ft_split(env[i], ':');
-	path = ft_calloc(i, sizeof(char **));
-	i = 0;
-	while (chk_path[i])
-	{
-		path[i] = ft_strjoin(chk_path[i], "/");
-		free (chk_path[i]);
-		i++;
-	}
-	free (chk_path);
-	return (path);
-}	
-
-char	*ft_check_cmd(char **path, char **cmd)
-{
-	char	*path_cmd;
-	int		j;
-
-	j = 0;
-	path_cmd = ft_strjoin(path[j], cmd[0]);
-	while (path[j] && access(path_cmd, X_OK) != 0)
-	{
-		free(path_cmd);
-		j++;
-		path_cmd = ft_strjoin(path[j], cmd[0]);
-	}
-	ft_free_split(path);
-	if (access(path_cmd, X_OK) != 0)
-		return ("error cmd"); /*to modify*/
-	return(path_cmd);
-}
-
-char	**ft_check_opt(char *path_cmd, char **cmd)
-{
-	free (cmd[0]);
-	cmd[0] = ft_strdup(path_cmd);
-	return(cmd);
 }
 
 void	ft_exe(char **argv, char **env)
@@ -130,6 +73,11 @@ void	ft_pipe(int fd_file, char **argv, char **env)
 	int	fd_pipe[2];
 	int	id;
 
+	fd_pipe[0] = fd_file;
+	dup2(fd_pipe[0], STDIN_FILENO);
+	close(fd_file);
+	ft_outfile(fd_pipe, argv);
+
 	if (pipe(fd_pipe) == -1)
 	{
 		perror("error pipe");
@@ -144,18 +92,15 @@ void	ft_pipe(int fd_file, char **argv, char **env)
 	if (id == 0)
 	{
 		close (fd_pipe[1]);
-		fd_pipe[0] = fd_file;
-		dup2(fd_pipe[0], STDIN_FILENO);
-		close(fd_file);
+		
 		close(fd_pipe[0]);
 		ft_exe(argv, env);
 	}
 	else
 	{
 		close(fd_pipe[0]);
-		ft_outfile(fd_pipe, argv);
 		close(fd_pipe[1]);
-		printf("after outfile\n");
+		// printf("after outfile\n");
 		// wait(NULL);
 	}
 }
