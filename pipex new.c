@@ -48,47 +48,12 @@ void	ft_exe(char **argv, char **env, int i)
 	ft_free_split(path_opt);
 }
 
-void	ft_first_fork(int **fd_pipe, char **argv, char **env)
+
+void	ft_exe_pipe(int fd_in, int fd_out, char **argv)
 {
-	int	fd_file;
-
-	fd_file = open(argv[1], O_RDONLY);
-	if (fd_file == -1)
-	{
-		perror("error opening infile");
-		exit(1);
-	}
-	dup2(fd_file, STDIN_FILENO);
-	dup2(fd_pipe[0][1], STDOUT_FILENO);
-	close(fd_file);
-	close(fd_pipe[0][1]);
-	ft_exe(argv, env, 0);
-}
-
-void	ft_last_fork(int **fd_pipe, char **argv, char **env, int i)
-{
-	int	fd_file2;
-
-	fd_file2 = open(argv[i + 3], O_WRONLY); /*mettre 4 quand 2 commande puis voir pour plus*/
-	if (fd_file2 == -1)
-	{
-		perror("error opening outfile");
-		exit(1);
-	}
-	dup2(fd_pipe[0], STDIN_FILENO);
-	dup2(fd_file2, STDOUT_FILENO);
-	close(fd_file2);
-	close(fd_pipe[0]);
-	ft_exe(argv, env, i);
-}
-
-void	ft_middle_fork(int **fd_pipe, char **argv, char **env, int i)
-{
-	dup2(fd_pipe[0], STDIN_FILENO);
-	dup2(fd_pipe[1], STDOUT_FILENO);
-	close(fd_pipe[0]);
-	close(fd_pipe[1]);
-	ft_exe(argv, env, i);
+	
+	dup2(fd_in, STDIN_FILENO);
+	dup2(fd_out, STDOUT_FILENO);
 }
 
 void	ft_pipe(int argc, char **argv, char **env)

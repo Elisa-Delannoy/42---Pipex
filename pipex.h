@@ -13,15 +13,6 @@
 #ifndef PIPEX_H
 # define	PIPEX_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 30
-# endif
-
-# if BUFFER_SIZE > 1000000
-#  undef BUFFER_SIZE 
-#  define BUFFER_SIZE 1000000
-# endif
-
 // # include "libft/libft.h"
 // # include "printf/ft_printf.h"
 
@@ -32,6 +23,8 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include "libft/libft.h"
+#include "printf/ft_printf.h"
 
 
 char	**ft_find_path(char **env);
