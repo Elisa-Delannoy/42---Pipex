@@ -11,26 +11,22 @@
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
-# define	PIPEX_H
-
-// # include "libft/libft.h"
-// # include "printf/ft_printf.h"
+# define PIPEX_H
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <stddef.h>
-#include <time.h>
-#include <fcntl.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include "libft/libft.h"
-#include "printf/ft_printf.h"
-
+# include <time.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <stdio.h>
+# include "libft/libft.h"
+# include "printf/ft_printf.h"
 
 char	**ft_find_path(char **env);
 char	*ft_check_cmd(char **path, char **cmd);
 char	**ft_check_opt(char *path_cmd, char **cmd);
 void	ft_free_split(char **path);
-int		ft_first_check(char **cmd);
+int		ft_first_check(char *cmd);
 
 #endif

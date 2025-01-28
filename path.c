@@ -14,23 +14,41 @@
 #include "libft/libft.h"
 #include "printf/ft_printf.h"
 
-// int	ft_first_check(char **cmd)
-// {
-// 	if(ft_strchr(cmd, '/') != NULL)
-// 	{
-// 		if(access(cmd, X_OK) != 0)
-// 			return (-1);
-// 	}
+void	ft_free_split(char **path)
+{
+	int		i;
 
-// 	return (0);
-// }
+	i = 0;
+	while (path[i])
+	{
+		free(path[i]);
+		i++;
+	}
+	free (path);
+}
+
+int	ft_first_check(char *cmd)
+{
+	if (ft_strchr(cmd, '/') != NULL)
+	{
+		if (access(cmd, X_OK) != 0)
+		{
+			ft_putstr_fd("no such file or directory: ", 2);
+			ft_putstr_fd(cmd, 2);
+			ft_putstr_fd("\n", 2);
+		}
+		else
+			return (0);
+	}
+	return (-1);
+}
 
 char	**ft_find_path(char **env)
 {
 	char	**chk_path;
 	char	**path;
 	int		i;
-	
+
 	i = 0;
 	while (env[i])
 	{
@@ -38,7 +56,7 @@ char	**ft_find_path(char **env)
 			break ;
 		i++;
 	}
-	chk_path = ft_split(env[i], ':');
+	chk_path = ft_split(env[i] + 5, ':');
 	path = ft_calloc(i, sizeof(char **));
 	i = 0;
 	while (chk_path[i])
@@ -49,7 +67,7 @@ char	**ft_find_path(char **env)
 	}
 	free (chk_path);
 	return (path);
-}	
+}
 
 char	*ft_check_cmd(char **path, char **cmd)
 {
@@ -58,7 +76,7 @@ char	*ft_check_cmd(char **path, char **cmd)
 
 	j = 0;
 	path_cmd = ft_strjoin(path[j], cmd[0]);
-	while (path[j] && access(path_cmd, X_OK) != 0)
+	while (path[j + 1] && access(path_cmd, X_OK) != 0)
 	{
 		free(path_cmd);
 		j++;
@@ -66,13 +84,21 @@ char	*ft_check_cmd(char **path, char **cmd)
 	}
 	ft_free_split(path);
 	if (access(path_cmd, X_OK) != 0)
-		return ("error cmd"); /*to modify*/
-	return(path_cmd);
+	{
+		ft_putstr_fd("command not found: ", 2);
+		ft_putstr_fd(cmd[0], 2);
+		ft_putstr_fd("\n", 2);
+		free(path_cmd);
+		ft_free_split(cmd);
+		return (NULL);
+	}
+	return (path_cmd);
 }
 
 char	**ft_check_opt(char *path_cmd, char **cmd)
 {
+	ft_printf("option");
 	free (cmd[0]);
 	cmd[0] = ft_strdup(path_cmd);
-	return(cmd);
+	return (cmd);
 }
