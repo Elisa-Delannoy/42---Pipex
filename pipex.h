@@ -21,7 +21,6 @@
 # include <sys/wait.h>
 # include <stdio.h>
 # include "libft/libft.h"
-# include "printf/ft_printf.h"
 
 char	**ft_find_path(char **env);
 char	*ft_check_cmd(char **path, char **cmd);

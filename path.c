@@ -12,7 +12,6 @@
 
 #include "pipex.h"
 #include "libft/libft.h"
-#include "printf/ft_printf.h"
 
 void	ft_free_split(char **path)
 {
@@ -97,7 +96,6 @@ char	*ft_check_cmd(char **path, char **cmd)
 
 char	**ft_check_opt(char *path_cmd, char **cmd)
 {
-	ft_printf("option");
 	free (cmd[0]);
 	cmd[0] = ft_strdup(path_cmd);
 	return (cmd);

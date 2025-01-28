@@ -12,7 +12,6 @@
 
 #include "pipex.h"
 #include "libft/libft.h"
-#include "printf/ft_printf.h"
 
 void	ft_exe(char *argv, char **env)
 {
