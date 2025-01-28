@@ -14,6 +14,17 @@
 #include "libft/libft.h"
 #include "printf/ft_printf.h"
 
+// int	ft_first_check(char **cmd)
+// {
+// 	if(ft_strchr(cmd, '/') != NULL)
+// 	{
+// 		if(access(cmd, X_OK) != 0)
+// 			return (-1);
+// 	}
+
+// 	return (0);
+// }
+
 char	**ft_find_path(char **env)
 {
 	char	**chk_path;
