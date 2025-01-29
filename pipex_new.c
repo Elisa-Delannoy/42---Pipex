@@ -93,7 +93,20 @@ int	main(int argc, char **argv, char **env)
 {
 	int	previous_fd;
 
-	previous_fd = open(argv[1], O_RDONLY);
+	if (argc < 5)
+	{
+		ft_putstr_fd("Should be : ./pipex file1 cmd1 cmd2 file2", 2);
+		ft_putstr_fd("\n", 2);
+		return (0);
+	}
+	previous_fd = open(argv[1], O_RDONLY | O_CREAT);
+	if (previous_fd == -1)
+	{
+		ft_putstr_fd("permission denied: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd("\n", 2);
+		return (0);
+	}
 	ft_pipe(argc, argv, env, previous_fd);
 	return (0);
 }
