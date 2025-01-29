@@ -26,15 +26,17 @@ void	ft_free_split(char **path)
 	free (path);
 }
 
-int	ft_first_check(char *cmd)
+int	ft_first_check(char **cmd)
 {
-	if (ft_strchr(cmd, '/') != NULL)
+	if (ft_strchr(cmd[0], '/') != NULL)
 	{
-		if (access(cmd, X_OK) != 0)
+		if (access(cmd[0], X_OK) != 0)
 		{
 			ft_putstr_fd("no such file or directory: ", 2);
-			ft_putstr_fd(cmd, 2);
+			ft_putstr_fd(cmd[0], 2);
 			ft_putstr_fd("\n", 2);
+			ft_free_split(cmd);
+			return (exit (1), -1);
 		}
 		else
 			return (0);
@@ -89,7 +91,7 @@ char	*ft_check_cmd(char **path, char **cmd)
 		ft_putstr_fd("\n", 2);
 		free(path_cmd);
 		ft_free_split(cmd);
-		return (NULL);
+		return (exit (1), NULL);
 	}
 	return (path_cmd);
 }

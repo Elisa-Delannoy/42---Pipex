@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf.h                                           :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edelanno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 16:53:19 by edelanno          #+#    #+#             */
-/*   Updated: 2024/11/18 16:53:20 by edelanno         ###   ########.fr       */
+/*   Created: 2025/01/21 15:47:47 by edelanno          #+#    #+#             */
+/*   Updated: 2025/01/21 15:47:49 by edelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-# define BASE16 "0123456789abcdef"
+#include "pipex.h"
+#include "libft/libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
+int	main(int argc, char **argv, char **env)
+{
+	int	previous_fd;
 
-int	ft_putchar(char c);
-int	ft_putstr(char *s);
-int	ft_convert10to16(size_t nb, char c, int j);
-int	ft_putnbr(long int n, int i);
-int	ft_conversions(char c, va_list argp);
-int	ft_printf(const char *format, ...);
-int	ft_testneghexa(size_t nb);
-
-#endif
+	if (argc == 5)
+	{
+		previous_fd = open(argv[1], O_RDONLY);
+		if (previous_fd == -1)
+		{
+			perror(argv[1]);
+		}
+		ft_pipe(argc, argv, env, previous_fd);
+		return (0);
+	}
+	else
+	{
+		ft_putstr_fd("Should be : ./pipex file1 cmd1 cmd2 file2", 2);
+		ft_putstr_fd("\n", 2);
+		return (0);
+	}
+}

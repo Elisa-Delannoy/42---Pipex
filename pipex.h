@@ -26,6 +26,7 @@ char	**ft_find_path(char **env);
 char	*ft_check_cmd(char **path, char **cmd);
 char	**ft_check_opt(char *path_cmd, char **cmd);
 void	ft_free_split(char **path);
-int		ft_first_check(char *cmd);
+int		ft_first_check(char **cmd);
+void	ft_pipe(int ac, char **av, char **env, int previous_fd);
 
 #endif
